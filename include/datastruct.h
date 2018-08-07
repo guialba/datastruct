@@ -10,20 +10,24 @@ typedef struct node{
     void* data;
     int size;
     struct node* next;
-}List;
+}Node;
 
-List* list_new(void*, int);
-int list_push(List*, void* , int);
-int list_pop(List**);
-int list_clear(List**);
+typedef Node* List;
 
-int list_printi(List*);
-int list_prints(List* list);
+Node* list_new(void*, int);
 
-//void list_add();      // Adiciona item no meio da lista pelo indice
+int list_add(List*, Node*);
+int list_push(List*, Node*);
+int list_remove(List*);
+int list_pop(List*);
+int list_clear(List*);
+
+int list_print(Node*, int(*)(void *));
+
+
+
 //void list_find();     // encontra um item da lista pelo valor
 //void list_count();    // conta o numero de registro da lista
-//void list_remove();   // remove um item do meio da lista pelo indice ???
 //void list_get();      // encontra um item da lista pelo indice ???
 
 #endif

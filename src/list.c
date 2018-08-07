@@ -1,43 +1,50 @@
 #include "datastruct.h"
 
-List* list_new(void* value, int size)
+Node* list_new(void* value, int size)
 {
     // create node
-    List* list = (List*) malloc( sizeof(List) );
-    memset( list, 0, sizeof(List) );
+    Node* node = (Node*) malloc( sizeof(Node) );
+    memset( node, 0, sizeof(Node) );
 
     // value
-    list->data = malloc( size );
-    memset( list->data, 0, size );
-    memcpy(list->data, value, size);
+    node->data = malloc( size );
+    memset( node->data, 0, size );
+    memcpy(node->data, value, size);
 
     //size
-    list->size = size;
-
-    return list;
+    node->size = size;
+    
+    return node;
 }
 
-int list_push(List* list, void* value, int size)
+int list_add(List* list, Node* node)
 {
-    if(list == NULL) return 0;
+    if(*list == NULL) return 0;
     else
     {
-        if(list->next == NULL)
+        if((*list)->next == NULL)
         {
-            list->next = list_new(value, size);
+            (*list)->next = node;
             return 1;
         }
         else
-            return 1+list_push(list->next, value, size);
+            return 1+list_add(&(*list)->next, node);
     }
 }
+int list_push(List* list, Node* node)
+{
+    Node* l = node;
+    l->next = *list;
+    *list = l;
+    return 1;
+}
 
-int list_pop(List** list)
+int list_remove(List* list)
 {
     if(list == NULL) return 0;
     else
     {
-        List* next = (*list)->next;
+        Node* next = (*list)->next;
         if(next == NULL)
         {
             free((*list)->data);
@@ -56,12 +63,22 @@ int list_pop(List** list)
                 return 2;
             }
             else
-                return 1+list_pop(&next);
+                return 1+list_remove(&next);
         }
     }
 }
+int list_pop(List* list)
+{
+    Node* l = (*list)->next;
+    if((*list)->data != NULL)
+        free((*list)->data);
+    if((*list)!= NULL)
+        free(*list);
+    (*list) = l;
+    return 1;
+}
 
-int list_clear(List** list)
+int list_clear(List* list)
 {
     if((*list) == NULL)return 0;
     else 
@@ -73,26 +90,13 @@ int list_clear(List** list)
         
 }
 
-int list_printi(List* list)
+
+int list_print(Node* list,  int (*print)(void *))
 {
     if(list != NULL)
     {
-        // Atualmente exibe apenas listas com valores inteiros.
-        // A ideia é modificar esta parte para permitir a exibição de qualquer tipo, mas isso ainda precisa ser elaborado  
-        printf(" -> (%d) %d \n", list->size, *(int*)list->data);
-        return 1+list_printi(list->next);
-    }
-    else
-        return 0;
-}
-int list_prints(List* list)
-{
-    if(list != NULL)
-    {
-        // Atualmente exibe apenas listas com valores inteiros.
-        // A ideia é modificar esta parte para permitir a exibição de qualquer tipo, mas isso ainda precisa ser elaborado  
-        printf(" -> (%d) %s \n", list->size, (char*)list->data);
-        return 1+list_prints(list->next);
+        print(list->data);
+        return 1+list_print(list->next, print);
     }
     else
         return 0;
