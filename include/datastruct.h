@@ -22,6 +22,8 @@ int list_remove(List*);
 int list_pop(List*);
 int list_clear(List*);
 
+int list_count(Node*);
+
 int list_print(Node*, int(*)(void *));
 
 

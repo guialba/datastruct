@@ -90,6 +90,12 @@ int list_clear(List* list)
         
 }
 
+int list_count(Node* list)
+{
+    if(list!=NULL)
+        return 1+list_count(list->next);
+    else return 0;
+}
 
 int list_print(Node* list,  int (*print)(void *))
 {
