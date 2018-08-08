@@ -1,5 +1,14 @@
 #include "datastruct.h"
 
+int list_redef(List* list, int i)
+{
+    if((*list)!=NULL)
+    {
+        (*list)->id = i;
+        list_redef((*list)->next, ++i);
+    }
+}
+
 Node* list_new(void* value, int size)
 {
     // create node
@@ -25,6 +34,7 @@ int list_add(List* list, Node* node)
         if((*list)->next == NULL)
         {
             (*list)->next = node;
+            list_redef()
             return 1;
         }
         else
@@ -36,6 +46,7 @@ int list_push(List* list, Node* node)
     Node* l = node;
     l->next = *list;
     *list = l;
+    list_redef(list, 1);
     return 1;
 }
 
@@ -106,4 +117,16 @@ int list_print(Node* list,  int (*print)(void *))
     }
     else
         return 0;
+}
+
+Node* list_find(List* list, Node* node, int (*compare)(void*, void*))
+{
+    if(list == NULL) return NULL;
+    else
+    {
+        if(!compare((*list)->data, node->data)) 
+            return (*list); // Igual
+        else // Diferente
+            return list_find(&(* list)->next, node, compare);
+    }
 }

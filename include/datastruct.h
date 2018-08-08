@@ -7,6 +7,7 @@
 #include <string.h>
 
 typedef struct node{
+    int id;
     void* data;
     int size;
     struct node* next;
@@ -28,8 +29,7 @@ int list_print(Node*, int(*)(void *));
 
 
 
-//void list_find();     // encontra um item da lista pelo valor
-//void list_count();    // conta o numero de registro da lista
+Node* list_find(List*, Node*, int (*compare)(void*, void*));
 //void list_get();      // encontra um item da lista pelo indice ???
 
 #endif
