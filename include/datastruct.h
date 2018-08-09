@@ -23,13 +23,13 @@ int list_remove(List*);
 int list_pop(List*);
 int list_clear(List*);
 
-int list_count(Node*);
+int list_count(List*);
 
-int list_print(Node*, int(*)(void *));
+int list_print(List*, int(*)(void *));
 
 
 
-Node* list_find(List*, Node*, int (*compare)(void*, void*));
-//void list_get();      // encontra um item da lista pelo indice ???
+int list_find(List*, Node*, int (*)(void*, void*));
+Node* list_get(List*, int);      
 
 #endif
